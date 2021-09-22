@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const morgan = require("morgan");
-const productRoutes = require("./api/routes/products");
 const avatarRoutes = require("./api/routes/avatars");
 
 app.use(morgan("dev"));
@@ -19,9 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use("/avatars", avatarRoutes);
-app.use("/products", productRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
