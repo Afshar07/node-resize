@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
+const resize = require("../../resize");
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "uploads/");
@@ -25,6 +26,7 @@ const upload = multer({
 });
 
 router.post("/", upload.single("avatar"), (req, res, next) => {
+  resize(req.file.path, "jpeg");
   res.status(200).json({
     message: "File Received",
   });
