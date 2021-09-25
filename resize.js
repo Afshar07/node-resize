@@ -6,10 +6,6 @@ module.exports = async function resize(path, mimetype) {
   await sharp(path)
     .jpeg({ mozjpeg: true })
     .toFile(`./resized/resizedAvatar.${imgFormat[1]}`);
-  fs.unlink(`./resized/resizedAvatar.${imgFormat[1]}`, (err) => {
-    if (err) {
-      console.log(err);
-    }
-  });
+  fs.unlinkSync(path);
   return `./resized/resizedAvatar.${imgFormat[1]}`;
 };
