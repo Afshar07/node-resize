@@ -6,7 +6,7 @@ const avatarRoutes = require("./api/routes/avatars");
 app.use(morgan("dev"));
 
 app.use((req, res, next) => {
-  res.header("Acess-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
