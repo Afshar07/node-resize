@@ -52,15 +52,10 @@ router.post("/", upload.single("avatar"), async (req, res, next) => {
       }
     );
     if (response.status === 200) {
-      res.json(response.data);
-      fs.unlink(`./resized/resizedAvatar.${imgFormat[1]}`, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
+      res.status(response.status).json(response.data);
+      fs.unlinkSync(`./resized/resizedAvatar.${imgFormat[1]}`);
     }
   } catch (error) {
-    console.log(error.response);
     res.status(error.response.status).json(error.response.data);
     fs.unlink(`./resized/resizedAvatar.${imgFormat[1]}`, (err) => {
       if (err) {
