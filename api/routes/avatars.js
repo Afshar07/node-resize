@@ -10,7 +10,8 @@ const storage = multer.diskStorage({
     callback(null, "uploads/");
   },
   filename: function (req, file, callback) {
-    callback(null, new Date().toISOString() + file.originalname);
+    let rand = Math.floor(Math.random() * 100000);
+    callback(null, new Date().toISOString() + rand + file.originalname);
   },
 });
 const fileFilter = (req, file, callback) => {
@@ -33,8 +34,7 @@ const upload = multer({
 });
 
 router.post("/", upload.single("avatar"), async (req, res, next) => {
-  let imgFormat = req.file.mimetype.split("/");
-  let newAvatarPath = await resize(req.file.path, req.file.mimetype);
+  let newAvatarPath = await resize(req.file.path, req.file.filename);
   const formData = new FormData();
   let formHeaders = formData.getHeaders();
   formData.append("avatar", fs.createReadStream(newAvatarPath));
@@ -53,11 +53,11 @@ router.post("/", upload.single("avatar"), async (req, res, next) => {
     );
     if (response.status === 200) {
       res.status(response.status).json(response.data);
-      fs.unlinkSync(`./resized/resizedAvatar.${imgFormat[1]}`);
+      fs.unlinkSync(`./resized/${req.file.filename}`);
     }
   } catch (error) {
     res.status(error.response.status).json(error.response.data);
-    fs.unlink(`./resized/resizedAvatar.${imgFormat[1]}`, (err) => {
+    fs.unlink(`./resized/${req.file.filename}}`, (err) => {
       if (err) {
         console.log(err);
       }
