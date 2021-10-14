@@ -5,7 +5,11 @@ const logger = require("./logger");
 module.exports = async function resize(path, name) {
   // Set quality to this at first and compress image once
   let firstSize = fs.statSync(path).size;
-  logger.info(`New Avatar: ${firstSize / 1000} KB`);
+  let firstLog = `${(firstSize / 1024).toFixed(2)} KB`;
+  if (firstSize >= 1024 * 1024) {
+    firstSize = firstSize / (1024 * 1024);
+    firstLog = `${firstSize.toFixed(2)} MB`;
+  }
 
   let quality = 80;
   await sharp(path)
@@ -27,10 +31,13 @@ module.exports = async function resize(path, name) {
     }
     round++;
   }
-  if (round > 0) {
-    logger.info(`${round} Loops`);
+  let lastLog = `${(size / 1024).toFixed(2)} KB`;
+  if (size >= 1024 * 1024) {
+    lastLog = `${(size / (1024 * 1024)).toFixed(2)} MB`;
   }
-  logger.info(`Final: ${size / 1000} KB`);
+  logger.info(
+    `New Avatar: ${firstLog} ----------- Loops: ${round} ----------- Final: ${lastLog}`
+  );
 
   fs.unlinkSync(path);
   return `./resized/${name}`;
