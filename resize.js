@@ -19,7 +19,7 @@ module.exports = async function resize(path, name) {
   // Check the size and if it was bigger than expected, run the while loop
   // And compress image until it became our desired size (Read it from .env)
   let round = 0;
-  while (size > process.env.FILE_MAX_SIZE || quality >= 2) {
+  while (size > process.env.FILE_MAX_SIZE) {
     quality--;
     await sharp(path)
       .jpeg({ mozjpeg: true, quality })
