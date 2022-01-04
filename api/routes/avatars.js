@@ -35,8 +35,7 @@ const upload = multer({
 });
 
 router.post("/", upload.single("avatar"), async (req, res, next) => {
-  let imgFormat = req.file.mimetype.split("/");
-  let newAvatarPath = await resize(req.file.path, req.file.mimetype);
+  let newAvatarPath = await resize(req.file.path, req.file.filename);
   const formData = new FormData();
   let formHeaders = formData.getHeaders();
   formData.append("avatar", fs.createReadStream(newAvatarPath));
