@@ -4,14 +4,15 @@ const multer = require("multer");
 const resize = require("../../resize");
 const axios = require("axios");
 const fs = require("fs");
+const crypto = require("crypto");
+const md5hash = crypto.createHash("md5");
 const FormData = require("form-data");
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "uploads/");
   },
   filename: function (req, file, callback) {
-    let rand = Math.floor(Math.random() * 100000);
-    callback(null, new Date().toISOString() + rand + file.originalname);
+    callback(null, md5hash.update(file.originalname).digest("hex"));
   },
 });
 const fileFilter = (req, file, callback) => {
@@ -51,13 +52,11 @@ router.post("/", upload.single("avatar"), async (req, res, next) => {
         },
       }
     );
-    if (response.status === 200) {
-      res.status(response.status).json(response.data);
-      fs.unlinkSync(`./resized/${req.file.filename}`);
-    }
+    res.status(response.status).json(response.data);
+    fs.unlinkSync(newAvatarPath);
   } catch (error) {
     res.status(error.response.status).json(error.response.data);
-    fs.unlink(`./resized/${req.file.filename}}`, (err) => {
+    fs.unlink(newAvatarPath, (err) => {
       if (err) {
         console.log(err);
       }
