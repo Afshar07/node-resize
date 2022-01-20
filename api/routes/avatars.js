@@ -47,7 +47,7 @@ router.post("/", upload.single("avatar"), async (req, res, next) => {
 
       {
         headers: {
-          Authorization: `Bearer ${req.body.token}`,
+          Authorization: req.body.token,
           ...formHeaders,
         },
       }
