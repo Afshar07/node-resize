@@ -5,14 +5,14 @@ const resize = require("../../resize");
 const axios = require("axios");
 const fs = require("fs");
 const crypto = require("crypto");
-const md5hash = crypto.createHash("md5");
+
 const FormData = require("form-data");
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "uploads/");
   },
   filename: function (req, file, callback) {
-    callback(null, md5hash.update(file.originalname).digest("hex"));
+    callback(null, crypto.createHash("md5").update(file.originalname).digest("hex"));
   },
 });
 const fileFilter = (req, file, callback) => {
