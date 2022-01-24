@@ -7,7 +7,7 @@ const fs = require("fs");
 const crypto = require("crypto");
 
 const FormData = require("form-data");
-console.log('here');
+
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "uploads/");
