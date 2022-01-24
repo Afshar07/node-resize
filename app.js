@@ -2,11 +2,6 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const avatarRoutes = require("./api/routes/avatars");
-const cors = require("cors");
-const corsOptions = {
-  origin: process.env.ALLOWED_ORIGIN.split(','),
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
 
 app.use(morgan("dev"));
 
@@ -18,7 +13,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/avatars", cors(corsOptions), avatarRoutes);
+app.use("/avatars", avatarRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not found");
