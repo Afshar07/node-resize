@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const avatarRoutes = require("./api/routes/avatars");
 const cors = require("cors");
 const corsOptions = {
-  origin: process.env.ALLOWED_ORIGIN,
+  origin: process.env.ALLOWED_ORIGIN.split(','),
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
