@@ -1,8 +1,9 @@
 const express = require("express");
+var cors = require("cors");
 const app = express();
 const morgan = require("morgan");
 const avatarRoutes = require("./api/routes/avatars");
-
+app.use(cors());
 app.use(morgan("dev"));
 
 app.use((req, res, next) => {
